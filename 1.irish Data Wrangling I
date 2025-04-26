@@ -1,0 +1,97 @@
+Data Wrangling I
+Perform the following operations using Python on any open source dataset (eg. data.csv)
+1. Import all the required Python Libraries.
+2. Locate an open source data from the web (eg. https://www.kaggle.com). Provide a clear
+description of the data and its source (i.e. URL of the web site).
+3. Load the Dataset into pandas dataframe.
+4. Data Preprocessing: check for missing values in the data using pandas isnull(), describe()
+function to get some initial statistics. Provide variable descriptions. Types of variables etc.
+Check the dimensions of the data frame.
+5. Data Formatting and Data Normalization: Summarize the types of variables by checking
+the data types (i.e., character, numeric, integer, factor, and logical) of the variables in the
+data set. If variables are not in the correct data type, apply proper type conversions.
+6. Turn categorical variables into quantitative variables in Python
+In addition to the codes and outputs, explain every operation that you do in the above steps and
+explain everything that you do to import/read/scrape the data set.
+
+
+
+csv_url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data' 
+ 
+import pandas as pd 
+ 
+iris=pd.read_csv(csv_url, header= None) 
+ 
+col_names =['Sepal_Length','Sepal_Width','Petal_Length','Petal_Width','Species'] 
+ 
+iris = pd.read_csv(csv_url, names = col_names) 
+ 
+df1=df=iris 
+ 
+iris.head(8) 
+ 
+iris.tail() 
+ 
+iris.index 
+ 
+iris.columns 
+ 
+iris.shape 
+ 
+iris.dtypes 
+ 
+iris.describe() 
+ 
+iris.columns.values 
+ 
+iris.iloc[5] 
+iris[47:51] 
+ 
+iris.loc[:,["Sepal_Length","Sepal_Width"]] 
+ 
+cols_2_4=iris.columns[2:4] iris[cols_2_4] 
+ 
+iris.isnull().any() 
+ 
+iris.isnull().sum() 
+ 
+iris.dtypes 
+ 
+df=iris df['petal Length(cm)']=iris['Petal_Length'].astype("int") 
+ 
+df1=df 
+ 
+df 
+ 
+from sklearn import preprocessing min_max_scaler = preprocessing.MinMaxScaler() 
+ 
+X=iris.iloc[:,:4] 
+ 
+X 
+ 
+X_scaled = min_max_scaler.fit_transform(X) df_normalized = pd.DataFrame(X_scaled) 
+ 
+df_normalized 
+ 
+df2=df df2['Species'].unique() 
+ 
+df_normalized = pd.DataFrame(X_scaled) 
+ 
+df_normalized 
+ 
+df2=df df2['Species'].unique() 
+ 
+from sklearn import preprocessing enc = preprocessing.OneHotEncoder() 
+ 
+features_df=df2.drop(columns=['Species']) 
+ 
+features_df 
+ 
+enc_df=(enc.fit_transform(df2[['Species']])).toarray() 
+ 
+enc_df = pd.DataFrame(enc_df, columns = ['Iris-Setosa','Iris-Versicolor','Iris-Virginica']) 
+ 
+df_encode = features_df.join(enc_df) 
+ 
+df_encode 
+ 
