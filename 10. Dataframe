@@ -1,0 +1,60 @@
+Data Visualization III
+Download the Iris flower dataset or any other dataset into a DataFrame. (eg
+https://archive.ics.uci.edu/ml/datasets/Iris ). Scan the dataset and give the inference as:
+1. How many features are there and what are their types (e.g., numeric, nominal)?
+2. Create a histogram for each feature in the dataset to illustrate the feature distributions.
+3. Create a boxplot for each feature in the dataset.
+Compare distributions and identify outliers.
+
+
+
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+
+df = pd.read_csv("https://raw.githubusercontent.com/shrikant-temburwar/Iris-Dataset/master/Iris.csv")
+df.head()
+
+df.describe()
+
+df.shape
+
+df["Species"].unique()
+
+df.groupby("Species").size()
+
+df.info()
+
+numeric_df = df.select_dtypes(include=['number'])
+
+# Now compute correlation
+corr = numeric_df.corr()
+# Plot heatmap
+plt.figure(figsize=(10, 6))
+sns.heatmap(corr, annot=True)
+plt.show()
+
+def graph(y):
+ sns.boxplot(x="Species", y=y, data=df)
+plt.figure(figsize=(10,10))
+ # Adding the subplot at the specified
+ # grid position
+plt.subplot(221)
+graph('SepalLengthCm')
+plt.subplot(222)
+graph('SepalWidthCm')
+plt.subplot(223)
+graph('PetalLengthCm')
+plt.subplot(224)
+graph('PetalWidthCm')
+plt.show()
+
+sns.boxplot(x='SepalWidthCm', data=df)
+plt.show()
+sns.boxplot(x='SepalLengthCm', data=df)
+plt.show()
+sns.boxplot(x='PetalWidthCm', data=df)
+plt.show()
+sns.boxplot(x='PetalLengthCm', data=df)
+plt.show()
