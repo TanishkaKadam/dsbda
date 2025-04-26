@@ -1,0 +1,44 @@
+Data Visualization I
+1. Use the inbuilt dataset 'titanic'. The dataset contains 891 rows and contains information
+about the passengers who boarded the unfortunate Titanic ship. Use the Seaborn library to
+see if we can find any patterns in the data.
+Write a code to check how the price of the ticket (column name: 'fare') for each passenger is
+distributed by plotting a histogram
+
+
+
+
+import seaborn as sns
+import pandas as pd
+titanic = sns.load_dataset("titanic")
+
+titanic
+
+titanic.info()
+
+x=titanic["fare"]
+
+titanic.describe()
+
+titanic.info()
+
+titanic_cleaned=titanic.drop(['pclass','embarked','deck','embark_town'],axis=1)
+titanic_cleaned.head(15)
+
+titanic_cleaned.info()
+
+titanic_cleaned.isnull().sum()
+
+titanic_cleaned.corr(method='pearson', numeric_only=True)
+
+sns.histplot(data=titanic,x="fare",bins=8)
+
+sns.histplot(data=titanic,x="fare",binwidth=10)
+
+sns.histplot(data=titanic,x="fare",bins=20,binwidth=10)
+
+sns.histplot(data=titanic,x="fare",binwidth=20)
+
+sns.histplot(data=titanic,x="fare",binwidth=1)
+
+sns.histplot(data=titanic,x="fare",bins=20,binwidth=50)
