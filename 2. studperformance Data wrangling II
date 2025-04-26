@@ -1,0 +1,138 @@
+Data Wrangling II
+Perform the following operations using Python on any open source dataset (eg. data.csv)
+1. Scan all variables for missing values and inconsistencies. If there are missing values and/or
+inconsistencies, use any of the suitable techniques to deal with them.
+2. Scan all numeric variables for outliers. If there are outliers, use any of the suitable
+techniques to deal with them.
+3. Apply data transformations on at least one of the variables. The purpose of this
+transformation should be one of the following reasons: to change the scale for better
+understanding of the variable, to convert a non-linear relation into a linear one, or to
+decrease the skewness and convert the distribution into a normal distribution.
+Reason and document your approach properly
+
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+from scipy import stats
+
+df=pd.read_csv("StudentsPerformance.csv")
+
+df
+
+df.isnull()
+
+series = pd.isnull(df["reading score"])
+df[series]
+
+df.notnull()
+
+seseries = pd.notnull(df["reading score"])
+df[series]
+
+from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder ()
+df['gender'] = le.fit_transform(df['gender'])
+newdf=df
+df
+
+df['gender'].replace({1: "male", 0: "female"}, inplace=True)
+df
+
+ndf=df
+ndf.fillna(0)
+
+m_v=df['reading score'].mean()
+df['reading score'].fillna(value=m_v, inplace=True)
+df
+
+ndf.replace(to_replace = np.nan, value = -99)
+
+ndf.dropna()
+
+ndf.dropna(how = 'all')
+
+ndf.dropna(axis = 1)
+
+new_data =ndf.dropna (axis = 0, how ='any')
+new_data
+
+col =['reading score', 'reading score', 'writing score']
+df.boxplot(col)
+
+print(np.where(df['reading score']>90))
+print(np.where(df['writing score']>90))
+
+fig, ax =plt.subplots(figsize = (18,10))
+ax.scatter(df['reading score'], df['writing score'])
+plt.show()
+ax.set_xlabel('(Proportion non-retail business acres)/(town)')
+ax.set_ylabel('(Full-value property-tax rate)/($10,000)')
+
+print(np.where((df['reading score']<50) & (df['writing score']>1)))
+print(np.where((df['reading score']>85) & (df['writing score']<3)))
+
+z = np.abs(stats.zscore(df['reading score']))
+
+print(z)
+
+threshold = 0.18
+
+sample_outliers = np.where(z <threshold)
+
+sample_outliers
+
+sorted_rscore= sorted(df['reading score'])
+
+sorted_rscore
+
+q1 = np.percentile(sorted_rscore, 25)
+q3 = np.percentile(sorted_rscore, 75)
+print(q1,q3)
+
+IQR = q3-q1
+
+lwr_bound = q1-(1.5*IQR)
+upr_bound = q3+(1.5*IQR)
+print(lwr_bound, upr_bound)
+
+new_df=df
+for i in sample_outliers:new_df.drop(i,inplace=True)
+new_df
+
+df=pd.read_csv("D:/StudentPerformance.csv")
+import pandas as pd
+
+df_stud=df
+ninetieth_percentile = np.percentile(df_stud['reading score'], 90)
+b = np.where(df_stud['reading score']>ninetieth_percentile,
+ninetieth_percentile, df_stud['reading score'])
+print("New array:",b)
+
+col = ['reading score']
+df.boxplot(col)
+
+median=np.median(sorted_rscore)
+median
+
+refined_df = df
+refined_df['reading score'] = np.where(refined_df['reading score'] > upr_bound, upr_bound, refined_df['reading score'])
+
+df
+
+refined_df = df
+refined_df['reading score'] = np.where(refined_df['reading score'] < lwr_bound, lwr_bound, refined_df['reading score'])
+
+df
+
+col = ['reading score']
+refined_df.boxplot(col)
+
+df
+
+import matplotlib.pyplot as plt
+new_df['reading score'].plot(kind ='hist')
+df['log_math'] = np.log10(df['reading score'])
+
+df['log_math'].plot(kind = 'hist')
