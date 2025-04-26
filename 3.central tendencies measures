@@ -1,0 +1,48 @@
+. Basic Statistics - Measures of Central Tendencies and Variance
+Perform the following operations on any open source dataset (eg. data.csv)
+1. Provide summary statistics (mean, median, minimum, maximum, standard deviation) for
+a dataset (age, income etc.) with numeric variables grouped by one of the qualitative
+(categorical) variable. For example, if your categorical variable is age groups and
+quantitative variable is income, then provide summary statistics of income grouped by the
+age groups. Create a list that contains a numeric value for each response to the categorical
+variable.
+2. Write a Python program to display some basic statistical details like percentile, mean,
+standard deviation etc. of the species of ‘Iris-setosa’, ‘Iris-versicolor’ and ‘Iris-versicolor’
+of iris.csv dataset.
+Provide the codes with outputs and explain everything that you do in this step.
+
+
+  
+
+import pandas as pd
+import numpy as np
+import sklearn
+from sklearn import datasets
+
+iris = datasets.load_iris()
+iris
+
+df = pd.DataFrame(iris['data'])
+df.head()
+
+df[4] = iris['target']
+df.head()
+
+df.rename(columns = {0:'SepalLengthCm', 1:'SepalWidthCm', 2:'PetalLengthCm', 3:'PetalWidthCm', 4:'Species'}, inplace = True)
+df.head()
+
+df.describe()
+
+df.shape
+
+df.mean()
+
+df.median()
+
+df.Species.mode()
+
+df.groupby(['Species']).count()
+df.SepalLengthCm.std()
+df.SepalWidthCm.std()
+df.PetalLengthCm.std()
+df.PetalWidthCm.std()
