@@ -1,0 +1,106 @@
+Practical 7 
+Text Analytics
+1. Extract Sample document and apply following document preprocessing methods:
+Tokenization, POS Tagging, stop words removal, Stemming and Lemmatization.
+Create representation of document by calculating Term Frequency and Inverse Document Frequency.
+
+
+import nltk 
+nltk.download('punkt_tab')
+
+
+from nltk import word_tokenize, sent_tokenize
+sent= "Sachin is consisdered to be one of the gretest cricket player. Virat is the caption of the Indian cricket team "
+print(word_tokenize(sent))
+print(sent_tokenize(sent))
+
+
+from nltk.corpus import stopwords
+import nltk
+nltk.download('stopwords')
+stop_words = stopwords.words('english')
+print(stop_words)
+
+
+token= word_tokenize(sent)
+cleaned_token =[]
+for word in token:
+  if word not in stop_words:
+    cleaned_token.append(word)
+print("This is the unclean version :",token)
+print("This is the cleaned version :",cleaned_token)
+
+words = [cleaned_token.lower() for cleaned_token in cleaned_token if cleaned_token]
+print(words)
+
+
+from nltk.stem  import PorterStemmer
+stemmer = PorterStemmer()
+port_stemmer_output = [stemmer.stem(words) for words in words]
+print(port_stemmer_output)
+
+
+from nltk.stem import WordNetLemmatizer
+nltk.download('wordnet')
+lemmatizer = WordNetLemmatizer()
+lemmatizer_output = [lemmatizer.lemmatize(words) for words in words]
+print(lemmatizer_output)
+
+
+from nltk import pos_tag
+import nltk
+nltk.download('averaged_perceptron_tagger')
+
+# Explicitly download the 'averaged_perceptron_tagger_eng' resource
+nltk.download('averaged_perceptron_tagger_eng')
+
+token = word_tokenize(sent)
+cleaned_token =[]
+for word in token:
+  if word not in stop_words:
+    cleaned_token.append(word)
+tagged = pos_tag(cleaned_token)
+print(tagged)
+
+
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import pandas as pd
+
+
+
+docs = ["Sachin is considered to be one of the greatest cricket palyer","Federer is considered one of the greatest tennis player",
+        "Nadal is considered one of the greatest tennis player","Virat is the caption of the Indian cricket team"]
+vectorizer = TfidfVectorizer(analyzer= "word", norm=None, use_idf=True)
+vectors = vectorizer.fit_transform(docs)
+print(vectorizer.vocabulary_) # Changed Mat to vectorizer and added an underscore to vocabulary
+
+
+
+tfidMat = vectorizer.fit_transform(docs)
+print(tfidMat)
+
+
+features_names = vectorizer.get_feature_names_out()
+print(features_names)
+dense = tfidMat.todense()
+denselist = dense.tolist()
+df = pd.DataFrame(denselist, columns=features_names)
+print(df)
+
+
+features_names= sorted(vectorizer.get_feature_names_out())
+
+
+docList = ['Doc 1', 'Doc 2', 'Doc 3', 'Doc 4']
+# Get the feature names from the vectorizer
+features_names = vectorizer.get_feature_names_out() 
+# Create the DataFrame using the correct columns
+skDocsIfIdfdf = pd.DataFrame(tfidMat.todense(), index=docList, columns=features_names)
+print(skDocsIfIdfdf)
+
+
+csim= cosine_similarity(tfidMat,tfidMat) # Changed tfidfMat to tfidMat
+csim = pd.DataFrame(csim, index=sorted(docList), columns=sorted(docList))
+print(csim) # Changed csimDf to csim
